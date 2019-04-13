@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">KotlinMVVM</string>
+    <string name="app_name">NewsMVVMKotlin</string>
+    <style name="api_token">a1ddb1d0adbd4061b5cd7fea3fcae531</style>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="bottom_nav_news_item">News</string>
+    <string name="bottom_nav_bookmark_item">Bookmark</string>
+    <string name="bottom_nav_settings_item">Settings</string>
 </resources>

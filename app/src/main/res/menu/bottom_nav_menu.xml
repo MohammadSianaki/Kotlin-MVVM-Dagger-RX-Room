@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/bottom_nav_bookmark_item"
+          android:title="@string/bottom_nav_bookmark_item"
+          android:icon="@drawable/ic_bookmark_border_black_24dp"/>
+    <item
+            android:id="@+id/bottom_nav_rss_item"
+            android:title="@string/bottom_nav_news_item"
+            android:icon="@drawable/ic_rss_feed_black_24dp"/>
+
+    <item
+            android:id="@+id/bottom_nav_settings_item"
+            android:title="@string/bottom_nav_settings_item"
+            android:icon="@drawable/ic_settings_black_24dp"/>
+</menu>
