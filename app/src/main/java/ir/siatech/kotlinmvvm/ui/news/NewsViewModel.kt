@@ -12,7 +12,7 @@ import javax.inject.Inject
 const val TAG = "NewsViewModel"
 
 class NewsViewModel @Inject constructor(private val newsRepository: NewsRepository) : BaseViewModel() {
-    val newsData: MutableLiveData<MutableList<Article>> = MutableLiveData()
+    val newsData: MutableLiveData<MutableList<Article>> by lazy { MutableLiveData<MutableList<Article>>() }
     val error: MutableLiveData<ApiError>  by lazy { MutableLiveData<ApiError>() }
 
     init {
@@ -20,9 +20,8 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
         fetchAllArticles()
     }
 
-
-    private fun getArticlesList(): LiveData<List<Article>> {
-        return newsRepository.getAllArticles()
+    fun getArticlesList(): LiveData<List<Article>> {
+        return newsRepository.getAllCachedArticles()
     }
 
     private fun fetchAllArticles() {
@@ -30,8 +29,8 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
         newsRepository.fetchArticles(
             { articles ->
                 Log.d(TAG, "getNewsData.success() called with size : ${articles?.size}")
+                newsData.postValue(articles)
                 if (!articles.isNullOrEmpty()) {
-                    newsData.postValue(articles)
                     for (article in articles) {
                         Log.d(TAG, "<<<< saving article : $article")
                         newsRepository.insertArticle(article).also { compositeDisposable.add(it) }
@@ -43,7 +42,7 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
             }, {
                 Log.d(TAG, "getNewsData.terminate() called")
             }
-        ).also { compositeDisposable.addAll(it) }
+        ).also { compositeDisposable.add(it) }
     }
 
 }

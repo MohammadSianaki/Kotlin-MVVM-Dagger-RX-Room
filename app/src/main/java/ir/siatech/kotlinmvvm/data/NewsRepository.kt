@@ -14,5 +14,5 @@ interface NewsRepository {
 
     fun insertArticle(article: Article): Disposable
 
-    fun getAllArticles(): LiveData<List<Article>>
+    fun getAllCachedArticles(): LiveData<List<Article>>
 }

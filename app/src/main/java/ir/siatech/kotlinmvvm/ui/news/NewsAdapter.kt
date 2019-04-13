@@ -3,6 +3,7 @@ package ir.siatech.kotlinmvvm.ui.news
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ir.siatech.kotlinmvvm.BR.articleItem
 import ir.siatech.kotlinmvvm.data.model.Article
@@ -10,7 +11,7 @@ import ir.siatech.kotlinmvvm.databinding.NewsRowItemBinding
 import ir.siatech.kotlinmvvm.ui.base.DataBindingViewHolder
 
 class NewsAdapter(
-    private val items: MutableList<Article> = arrayListOf()
+    private var items: MutableList<Article> = arrayListOf()
 ) :
     RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
@@ -31,13 +32,13 @@ class NewsAdapter(
 
 
     fun add(list: MutableList<Article>) {
-        items.addAll(list)
-        notifyDataSetChanged()
-    }
-
-    fun clear() {
-        items.clear()
-        notifyDataSetChanged()
+        val newItems: MutableList<Article> = arrayListOf()
+        newItems.addAll(items)
+        newItems.addAll(list)
+        val result: DiffUtil.DiffResult = DiffUtil
+            .calculateDiff(NewsDiffUtils(items, newItems))
+        items = newItems
+        result.dispatchUpdatesTo(this)
     }
 
     inner class ViewHolder(dataBinding: ViewDataBinding) : DataBindingViewHolder<Article>(dataBinding) {
@@ -47,5 +48,6 @@ class NewsAdapter(
         }
 
     }
+
 }
 

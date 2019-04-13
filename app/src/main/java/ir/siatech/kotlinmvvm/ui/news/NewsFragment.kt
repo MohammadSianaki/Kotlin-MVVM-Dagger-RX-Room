@@ -18,15 +18,18 @@ import javax.inject.Inject
 
 class NewsFragment : DaggerFragment() {
 
-
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var viewModel: NewsViewModel
+    private val viewModel: NewsViewModel by lazy {
+        ViewModelProviders
+            .of(this, viewModelFactory)
+            .get(NewsViewModel::class.java)
+    }
 
-    //    private val viewModel: NewsViewModel  by lazy {
-//    }
-    private val newsAdapter: NewsAdapter by lazy { NewsAdapter(arrayListOf()) }
+    private val newsAdapter: NewsAdapter by lazy {
+        NewsAdapter(arrayListOf())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,37 +41,36 @@ class NewsFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders
-            .of(this, viewModelFactory)
-            .get(NewsViewModel::class.java)
+        setupRecyclerView()
+    }
+
+    private fun setupRecyclerView() {
+        rv_home_news.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        rv_home_news.adapter = newsAdapter
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         with(viewModel) {
             newsData.observe(this@NewsFragment, Observer {
-                initView(it)
+                refreshItems(it)
             })
 
             error.observe(this@NewsFragment, Observer {
+                ll_news_progress.visibility = View.GONE
                 Toast.makeText(context, "${it?.message}", Toast.LENGTH_LONG).show()
             })
         }
     }
 
-    private fun initView(it: MutableList<Article>?) {
-        rv_home_news.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        rv_home_news.adapter = newsAdapter
-        if (it!!.isNotEmpty()) {
-            newsAdapter.clear()
+    private fun refreshItems(it: MutableList<Article>?) {
+        ll_news_progress.visibility = View.GONE
+        it?.run {
             newsAdapter.add(it)
-        } else {
-            Toast.makeText(context, "Oops,List is empty!", android.widget.Toast.LENGTH_LONG).show()
         }
     }
 
     companion object {
-
         @JvmStatic
         val TAG = NewsFragment::class.java.simpleName
 

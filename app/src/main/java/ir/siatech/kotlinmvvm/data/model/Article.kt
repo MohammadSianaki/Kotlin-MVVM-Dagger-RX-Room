@@ -9,29 +9,30 @@ import org.parceler.Parcel
 @Entity(tableName = "article_table")
 data class Article(
 
+
     @PrimaryKey(autoGenerate = true)
-    val articleId: Long,
+    val id: Long,
 
     @SerializedName("author")
     val author: String?,
     @SerializedName("content")
-    val content: String,
+    val content: String?,
     @SerializedName("description")
-    val description: String,
+    val description: String?,
     @SerializedName("publishedAt")
-    val publishedAt: String,
+    val publishedAt: String?,
     @SerializedName("source")
 
-    val source: Source,
+    val source: Source?,
     @SerializedName("title")
-    val title: String,
+    val title: String?,
     @SerializedName("url")
-    val url: String,
+    val url: String?,
     @SerializedName("urlToImage")
-    val urlToImage: String
+    val urlToImage: String?
 ) {
     override fun toString(): String {
-        return "Article(articleId=$articleId, description='$description', title='$title')"
+        return "Article(description='$description', title='$title')"
     }
 }
 

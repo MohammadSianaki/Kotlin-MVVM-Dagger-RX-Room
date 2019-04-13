@@ -7,4 +7,5 @@
     <string name="bottom_nav_news_item">News</string>
     <string name="bottom_nav_bookmark_item">Bookmark</string>
     <string name="bottom_nav_settings_item">Settings</string>
+    <string name="loading">Please wait...</string>
 </resources>
